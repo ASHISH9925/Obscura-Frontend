@@ -65,20 +65,7 @@ export default function AnimatedTestimonials({ testimonials = [] }) {
       <div className="w-full max-w-6xl overflow-hidden">
 
         {/*Draggable wrapper → replaced with smooth version */}
-        <motion.div
-          drag="x"
-          dragElastic={0.4}
-          dragMomentum={false}
-          dragTransition={{
-            bounceStiffness: 300,
-            bounceDamping: 20
-          }}
-          dragConstraints={{ left: -500, right: 500 }}
-          style={{ x: dragX, cursor: "grab" }}
-          onDragEnd={handleDragEnd}
-          whileDrag={{ cursor: "grabbing", scale: 1.02 }}
-          className="touch-pan-y"
-        >
+        <div className="relative w-full">
           <AnimatePresence custom={direction} mode="wait">
             <motion.div
               key={items[active].name}
@@ -87,17 +74,23 @@ export default function AnimatedTestimonials({ testimonials = [] }) {
               initial="enter"
               animate="center"
               exit="exit"
-              className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-5 min-h-[400px] md:pl-[160px]"
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={handleDragEnd}
+              whileDrag={{ cursor: "grabbing" }}
+              className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-5 min-h-[400px] md:pl-[160px] cursor-grab touch-pan-y"
             >
               <motion.div className="relative h-[340px] w-[340px] md:h-[380px] md:w-[380px] rounded-3xl overflow-hidden shadow-2xl flex-shrink-0 ">
                 <img
                   src={items[active].src}
                   alt={items[active].name}
-                  className="w-full h-full object-cover"
+                  draggable={false}
+                  className="w-full h-full object-cover pointer-events-none"
                 />
               </motion.div>
 
-              <motion.div className="p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 shadow-lg w-full max-w-lg flex-shrink-0">
+              <motion.div className="p-6 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 shadow-lg w-full max-w-lg flex-shrink-0 select-none">
                 <h3 className="text-3xl text-white leading-tight font-semibold">
                   {items[active].name}
                 </h3>
@@ -110,7 +103,7 @@ export default function AnimatedTestimonials({ testimonials = [] }) {
               </motion.div>
             </motion.div>
           </AnimatePresence>
-        </motion.div>
+        </div>
 
         {/* Pagination */}
         <div className="flex justify-center mt-10 gap-3">
